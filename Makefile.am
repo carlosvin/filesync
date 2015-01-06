@@ -1,0 +1,1 @@
+SUBDIRS=libFileSync include exampleProgram

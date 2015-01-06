@@ -1,0 +1,6 @@
+exampleProgram-exampleProgram.o: exampleProgram.cpp \
+ /usr/include/stdc-predef.h ../include/libFileSync.h
+
+/usr/include/stdc-predef.h:
+
+../include/libFileSync.h:
