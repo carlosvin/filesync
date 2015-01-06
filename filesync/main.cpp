@@ -14,7 +14,33 @@
  */
 
 #include "filesync.h"
+#include <cstdlib>
+#include <string>
+#include <vector>
+#include <tuple>
+#include <iostream>
 
-int main(void) {
-  return 0;
+
+using namespace std;
+
+class Config
+{
+public:
+	vector<tuple<string,string>> mappings;
+	Config()
+	{
+		mappings = {make_tuple("a", "b"), make_tuple("c", "d")};
+	};
+};
+
+int main(void)
+{
+	Config cfg {};
+	for (auto x : cfg.mappings)
+	{
+		string from, to;
+		std::tie(from, to) = x;
+		cout << from << "->" <<  to << endl;
+	}
+	return 0;
 }

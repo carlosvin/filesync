@@ -5,7 +5,7 @@
 class Filesystem
 {
 public:
-    virtual ~Filesystem() { }
+    virtual ~Filesystem() = default;
     virtual void list() = 0;
 };
 
