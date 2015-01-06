@@ -13,7 +13,7 @@
  ============================================================================
  */
 
-#include "libFileSync.h"
+#include "filesync.h"
 
 int main(void) {
   return 0;

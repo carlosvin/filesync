@@ -1,6 +1,0 @@
-libFileSync_la-libFileSync.lo: libFileSync.cpp /usr/include/stdc-predef.h \
- ../include/libFileSync.h
-
-/usr/include/stdc-predef.h:
-
-../include/libFileSync.h:

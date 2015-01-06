@@ -1,1 +1,1 @@
-SUBDIRS=libFileSync include exampleProgram
+SUBDIRS=include libFileSyncFtp filesync

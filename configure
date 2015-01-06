@@ -8721,6 +8721,10 @@ _lt_linker_boilerplate=`cat conftest.err`
 $RM -r conftest*
 
 
+## CAVEAT EMPTOR:
+## There is no encapsulation within the following macros, do not change
+## the running order or otherwise move them around unless you know exactly
+## what you are doing...
 if test -n "$compiler"; then
 
 lt_prog_compiler_no_builtin_flag=
@@ -15824,7 +15828,7 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
 
-ac_config_files="$ac_config_files Makefile exampleProgram/Makefile libFileSync/Makefile include/Makefile"
+ac_config_files="$ac_config_files Makefile filesync/Makefile libFileSyncFtp/Makefile include/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -16953,8 +16957,8 @@ do
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "exampleProgram/Makefile") CONFIG_FILES="$CONFIG_FILES exampleProgram/Makefile" ;;
-    "libFileSync/Makefile") CONFIG_FILES="$CONFIG_FILES libFileSync/Makefile" ;;
+    "filesync/Makefile") CONFIG_FILES="$CONFIG_FILES filesync/Makefile" ;;
+    "libFileSyncFtp/Makefile") CONFIG_FILES="$CONFIG_FILES libFileSyncFtp/Makefile" ;;
     "include/Makefile") CONFIG_FILES="$CONFIG_FILES include/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
