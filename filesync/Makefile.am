@@ -4,7 +4,7 @@ bin_PROGRAMS=filesync
 filesync_SOURCES=main.cpp
 
 # Linker options for a.out
-filesync_LDFLAGS = 
+filesync_LDFLAGS = -ldl
 
 #$(top_srcdir)/libFileSync/libFileSync.la
 

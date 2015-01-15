@@ -1,0 +1,23 @@
+SharedMemoryTest.o: src/SharedMemoryTest.cpp src/SharedMemoryTest.h \
+ /home/carlos/apps/poco-1.6.0/Foundation/include/Poco/Foundation.h \
+ /home/carlos/apps/poco-1.6.0/Foundation/include/Poco/Config.h \
+ /home/carlos/apps/poco-1.6.0/Foundation/include/Poco/Platform.h \
+ /home/carlos/apps/poco-1.6.0/Foundation/include/Poco/Platform_POSIX.h \
+ /home/carlos/apps/poco-1.6.0/Foundation/include/Poco/Alignment.h \
+ /home/carlos/apps/poco-1.6.0/Foundation/include/Poco/Bugcheck.h \
+ /home/carlos/apps/poco-1.6.0/Foundation/include/Poco/Types.h \
+ /home/carlos/apps/poco-1.6.0/Foundation/include/Poco/Path.h \
+ /home/carlos/apps/poco-1.6.0/CppUnit/include/CppUnit/TestCase.h \
+ /home/carlos/apps/poco-1.6.0/CppUnit/include/CppUnit/CppUnit.h \
+ /home/carlos/apps/poco-1.6.0/CppUnit/include/CppUnit/Guards.h \
+ /home/carlos/apps/poco-1.6.0/CppUnit/include/CppUnit/Test.h \
+ /home/carlos/apps/poco-1.6.0/CppUnit/include/CppUnit/CppUnitException.h \
+ /home/carlos/apps/poco-1.6.0/CppUnit/include/CppUnit/TestCaller.h \
+ /home/carlos/apps/poco-1.6.0/CppUnit/include/CppUnit/Guards.h \
+ /home/carlos/apps/poco-1.6.0/CppUnit/include/CppUnit/TestCase.h \
+ /home/carlos/apps/poco-1.6.0/CppUnit/include/CppUnit/TestSuite.h \
+ /home/carlos/apps/poco-1.6.0/Foundation/include/Poco/SharedMemory.h \
+ /home/carlos/apps/poco-1.6.0/Foundation/include/Poco/File.h \
+ /home/carlos/apps/poco-1.6.0/Foundation/include/Poco/Timestamp.h \
+ /home/carlos/apps/poco-1.6.0/Foundation/include/Poco/File_UNIX.h \
+ /home/carlos/apps/poco-1.6.0/Foundation/include/Poco/Exception.h
