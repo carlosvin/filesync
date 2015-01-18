@@ -1,0 +1,77 @@
+apply plugin: 'cpp'
+
+binaries.all {
+    cppCompiler.args "-std=c++0x"
+	linker.args "-ldl"
+    linker.args "-lpthread"
+    linker.args "-lrt"
+}
+
+model {
+    buildTypes {
+        debug
+        release
+    }
+    
+    platforms {
+        x86 {
+            architecture "x86"
+        }
+        x64 {
+            architecture "x86_64"
+        }
+    }
+
+    repositories {
+        libs(PrebuiltLibraries) {
+            pocoNet {
+                headers.srcDir "poco/include"
+                binaries.withType(StaticLibraryBinary) {
+                    staticLibraryFile = file("poco/lib/libPocoNet.a")
+                }
+            }
+            pocoFoundation {
+                headers.srcDir "poco/include"
+                binaries.withType(StaticLibraryBinary) {
+                    staticLibraryFile = file("poco/lib/libPocoFoundation.a")
+                }
+            }
+            pocoUtil {
+                headers.srcDir "poco/include"
+                binaries.withType(StaticLibraryBinary) {
+                    staticLibraryFile = file("poco/lib/libPocoUtil.a")
+                }
+            }
+        }
+    }
+}
+
+
+libraries {
+    lib {
+    }
+ 	ftp {
+        binaries.all {
+        	lib library: "pocoNet", linkage: "static"
+            lib libraries.lib.shared
+        }
+    }
+}
+
+
+executables {
+    main {
+        binaries.all {
+            lib libraries.lib.shared
+            lib libraries.ftp.shared
+            lib library: "pocoNet", linkage: "static"
+            lib library: "pocoUtil", linkage: "static"
+            lib library: "pocoFoundation", linkage: "static"
+            
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2'
+}
