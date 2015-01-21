@@ -17,4 +17,6 @@ Makefile.in
 libtool
 *.o
 *.lo
+/build
+/.gradle
 

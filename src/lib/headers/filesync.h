@@ -26,18 +26,21 @@ public:
 typedef Filesystem* create_t();
 typedef void destroy_t(Filesystem*);
 
+#include <iostream>
 
 extern const void loadConfig(const char * cfgPath,
 		std::map<std::string, std::string> & cfg) {
+	std::cout << "reading " << cfgPath << std::endl;
+
 	std::fstream iStreamFile(cfgPath);
 
 	std::string line;
 	while (std::getline(iStreamFile, line)) {
 		std::istringstream is_line(line);
 		std::string key;
-		if (std::getline(iStreamFile, key, '=')) {
+		if (std::getline(is_line, key, '=')) {
 			std::string value;
-			if (std::getline(iStreamFile, value))
+			if (std::getline(is_line, value))
 				cfg[key] = value;
 		}
 	}

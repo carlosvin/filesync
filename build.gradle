@@ -1,4 +1,5 @@
 apply plugin: 'cpp'
+apply plugin: 'eclipse-cdt'
 
 binaries.all {
     cppCompiler.args "-std=c++0x"

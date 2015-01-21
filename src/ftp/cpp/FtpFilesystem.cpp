@@ -16,7 +16,7 @@ using namespace std;
 FtpFilesystem::FtpFilesystem()
 {
 	map<string, string> cfgMap;
-	loadConfig("cfg/ftp.cfg", cfgMap);
+	loadConfig("conf/ftp.cfg", cfgMap);
 
 	for (auto& kv : cfgMap)
 	{
@@ -41,5 +41,13 @@ void FtpFilesystem::walk(Performer & performer)
 {
 
 	performer.onDir(_ftp->getWorkingDirectory().c_str());
+	istream & is = _ftp->beginList();
+	string line;
+	while (std::getline(is, line))
+	{
+		performer.onDir(line.c_str());
+	}
+
+	_ftp->endList();
 }
 
