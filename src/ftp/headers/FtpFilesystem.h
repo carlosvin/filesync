@@ -18,6 +18,9 @@ class FtpFilesystem: public Filesystem{
 private:
 	Poco::Path _path;
 	std::unique_ptr<Poco::Net::FTPClientSession> _ftp;
+
+	void walk(Performer & performer, const  std::string & path);
+
 public:
 
 	FtpFilesystem();

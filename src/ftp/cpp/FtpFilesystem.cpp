@@ -9,45 +9,80 @@
 
 #include <map>
 #include <iostream>
+#include <vector>
 
 using namespace Poco::Net;
 using namespace std;
 
-FtpFilesystem::FtpFilesystem()
-{
+FtpFilesystem::FtpFilesystem() {
 	map<string, string> cfgMap;
 	loadConfig("conf/ftp.cfg", cfgMap);
 
-	for (auto& kv : cfgMap)
-	{
-	    cout << kv.first << " = " << kv.second << endl;
+	for (auto& kv : cfgMap) {
+		cout << kv.first << " = " << kv.second << endl;
 	}
 
-    cout << "Cfg read" << endl;
-
+	cout << "Cfg read" << endl;
 
 	_ftp = unique_ptr<FTPClientSession>(new FTPClientSession(cfgMap["host"]));
 
 	_ftp->login(cfgMap["username"], cfgMap["password"]);
 
 	_ftp->setWorkingDirectory(cfgMap["working_directory"]);
+
+	//_ftp->setFileType(FTPClientSession::TYPE_TEXT);
+
 }
 
-FtpFilesystem::~FtpFilesystem()
-{
+FtpFilesystem::~FtpFilesystem() {
 }
 
-void FtpFilesystem::walk(Performer & performer)
-{
+void FtpFilesystem::walk(Performer & performer) {
 
-	performer.onDir(_ftp->getWorkingDirectory().c_str());
-	istream & is = _ftp->beginList();
+	walk(performer, _ftp->getWorkingDirectory());
+}
+
+void FtpFilesystem::walk(Performer & performer, const string & path) {
+	istream & is = _ftp->beginList(path, false);
+
 	string line;
-	while (std::getline(is, line))
-	{
-		performer.onDir(line.c_str());
+	vector<string> fileList;
+	while (std::getline(is, line)) {
+		fileList.push_back(line);
+		cout << line << ",";
 	}
 
 	_ftp->endList();
+	cout << endl;
+
+
+	if (fileList.size() == 1) {
+		string d = fileList.front();
+
+		cout << d.size() << " == " << path.size() << endl;
+
+		if (d == path) {
+			cout << "'" << d << "'" << " == " << "'" << path << "'" << endl;
+			// is a file
+			performer.onFile(path.c_str());
+		} else {
+			cout << "'" << d << "'" << " != " << "'" << path << "'" << endl;
+			// current file is a directory
+			performer.onDir(path.c_str());
+			walk(performer, d);
+		}
+	} else {
+		// current file is a directory
+		performer.onDir(path.c_str());
+
+		for (auto file : fileList) {
+			walk(performer, file);
+			//performer.onDir(d.c_str());
+			//_ftp->setWorkingDirectory(d);
+			//walk(performer);
+		}
+
+	}
+
 }
 
