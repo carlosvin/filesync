@@ -41,11 +41,11 @@ public:
 
 	virtual void onFile(const char * path)
 	{
-		cout << "file: " << path << endl;
+		cout << "file:\t" << path << endl;
 	}
 	virtual void onDir(const char * path)
 	{
-		cout << "dir: " << path << endl;
+		cout << "dir:\t" << path << endl;
 	}
 };
 

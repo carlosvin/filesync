@@ -44,29 +44,30 @@ void FtpFilesystem::walk(Performer & performer) {
 
 void FtpFilesystem::walk(Performer & performer, const string & path) {
 	istream & is = _ftp->beginList(path, false);
-
 	string line;
 	vector<string> fileList;
-	while (std::getline(is, line)) {
-		fileList.push_back(line);
-		cout << line << ",";
+	while (getline(is, line)) {
+		size_t pos = line.find('\r');
+		if (pos ==  string::npos)
+		{
+			fileList.push_back(line);
+		}else
+		{
+			fileList.push_back(line.substr(0, pos));
+		}
 	}
 
+
 	_ftp->endList();
-	cout << endl;
 
 
 	if (fileList.size() == 1) {
 		string d = fileList.front();
 
-		cout << d.size() << " == " << path.size() << endl;
-
 		if (d == path) {
-			cout << "'" << d << "'" << " == " << "'" << path << "'" << endl;
 			// is a file
 			performer.onFile(path.c_str());
 		} else {
-			cout << "'" << d << "'" << " != " << "'" << path << "'" << endl;
 			// current file is a directory
 			performer.onDir(path.c_str());
 			walk(performer, d);
