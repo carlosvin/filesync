@@ -10,6 +10,7 @@
 #include <map>
 #include <iostream>
 #include <vector>
+#include <Poco/Net/NetException.h>
 
 using namespace Poco::Net;
 using namespace std;
@@ -59,22 +60,29 @@ void FtpFilesystem::walk(Performer & performer, const string & path) {
 
 vector<string> FtpFilesystem::getFiles(const string & path)
 {
-	istream & is = _ftp->beginList(path, false);
-	string line;
-	vector<string> fileList;
-	while (getline(is, line)) {
-		size_t pos = line.find('\r');
-		if (pos ==  string::npos)
-		{
-			fileList.push_back(line);
-		}else
-		{
-			fileList.push_back(line.substr(0, pos));
+	vector<string> fileList{};
+	try
+	{
+		istream & is = _ftp->beginList(path, false);
+		string line;
+		while (getline(is, line)) {
+			size_t pos = line.find('\r');
+			if (pos ==  string::npos)
+			{
+				fileList.push_back(line);
+			}else
+			{
+				fileList.push_back(line.substr(0, pos));
+			}
 		}
+
+		_ftp->endList();
 	}
-
-
-	_ftp->endList();
+	catch (Poco::Net::FTPException & e)
+	{
+		cout << "reading " << path << " <- " << e.what() << endl;
+		_ftp->endList();
+	}
 
 	return fileList;
 }
