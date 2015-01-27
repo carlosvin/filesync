@@ -23,14 +23,6 @@
 
 using namespace std;
 
-class Config {
-public:
-	vector<tuple<string, string>> mappings;
-	Config() {
-		mappings = {make_tuple("a", "b"), make_tuple("c", "d")};
-	};
-};
-
 class PerformerImpl : public Performer
 {
 public:
@@ -84,6 +76,8 @@ int loadLibrary(const char * libName) {
 	PerformerImpl performer;
 	fs->walk(performer);
 
+	cout << "End of walk" << endl;
+
 	// destroy the class
 	destroy_filesystem(fs);
 
@@ -94,13 +88,6 @@ int loadLibrary(const char * libName) {
 }
 
 int main(void) {
-
-	Config cfg { };
-	for (auto x : cfg.mappings) {
-		string from, to;
-		std::tie(from, to) = x;
-		cout << from << "->" << to << endl;
-	}
 
 	loadLibrary("lib/libftp.so");
 

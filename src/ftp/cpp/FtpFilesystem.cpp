@@ -60,30 +60,37 @@ void FtpFilesystem::walk(Performer & performer, const string & path) {
 
 	_ftp->endList();
 
+	size_t numFiles = fileList.size();
 
-	if (fileList.size() == 1) {
-		string d = fileList.front();
+	if (numFiles > 0)
+	{
+		if (numFiles == 1) {
+			string d = fileList.front();
 
-		if (d == path) {
-			// is a file
-			performer.onFile(path.c_str());
+			if (d == path) {
+				// is a file
+				performer.onFile(path.c_str());
+			} else {
+				walk(performer, d);
+				// current file is a directory
+				performer.onDir(path.c_str());
+			}
 		} else {
+
+			for (auto file : fileList) {
+				walk(performer, file);
+			}
 			// current file is a directory
 			performer.onDir(path.c_str());
-			walk(performer, d);
+
 		}
-	} else {
-		// current file is a directory
+	} else
+	{
+		cout << path << " <empty>" << endl;
 		performer.onDir(path.c_str());
-
-		for (auto file : fileList) {
-			walk(performer, file);
-			//performer.onDir(d.c_str());
-			//_ftp->setWorkingDirectory(d);
-			//walk(performer);
-		}
-
 	}
+
+
 
 }
 
