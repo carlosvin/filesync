@@ -20,6 +20,7 @@
 #include <tuple>
 #include <iostream>
 #include <dlfcn.h>
+#include <csignal>
 
 using namespace std;
 
@@ -41,55 +42,70 @@ public:
 	}
 };
 
+class App
+{
+private:
+	void * _lib;
+	Filesystem * _fs;
 
-
-int loadLibrary(const char * libName) {
-	void* lib = dlopen(libName, RTLD_LAZY);
-	if (!lib) {
-		cerr << "Cannot load library " <<  libName << ": " << dlerror() << '\n';
-		return 1;
+public:
+	App(const char * libName)
+	{
+		_lib = dlopen(libName, RTLD_LAZY);
+		if (_lib)
+		{
+			create_t* create_filesystem= (create_t*) dlsym(_lib, "create");
+			if (dlerror())
+			{
+				_fs = nullptr;
+			}else
+			{
+				_fs = create_filesystem();
+			}
+		}else
+		{
+			_lib = nullptr;
+		}
 	}
 
-	// reset errors
-	dlerror();
-
-	// load the symbols
-	create_t* create_filesystem= (create_t*) dlsym(lib, "create");
-	const char* dlsym_error = dlerror();
-	if (dlsym_error) {
-		cerr << "Cannot load symbol create: " << dlsym_error << '\n';
-		return 1;
+	virtual ~App()
+	{
+		if (_lib)
+		{
+			destroy_t* destroy_filesystem = (destroy_t*) dlsym(_lib, "destroy");
+			char * dlsym_error = dlerror();
+			if (dlerror()) {
+				cerr << "Cannot load symbol destroy: " << dlsym_error << '\n';
+			}else if (_fs)
+			{
+				destroy_filesystem(_fs);
+			}
+		}
+		cout << "~App" << endl;
 	}
 
-	destroy_t* destroy_filesystem = (destroy_t*) dlsym(lib, "destroy");
-	dlsym_error = dlerror();
-	if (dlsym_error) {
-		cerr << "Cannot load symbol destroy: " << dlsym_error << '\n';
-		return 1;
+	void start()
+	{
+		PerformerImpl performer;
+		_fs->walk(performer);
 	}
+};
 
-	// create an instance of the class
-	Filesystem * fs = create_filesystem();
 
-	// use the class
-	// TODO
-	PerformerImpl performer;
-	fs->walk(performer);
 
-	cout << "End of walk" << endl;
-
-	// destroy the class
-	destroy_filesystem(fs);
-
-	// unload the triangle library
-	dlclose(lib);
-
-	return 0;
+void onStop (int signal)
+{
+	cout << "Caught SIGINT" << endl;
 }
 
-int main(void) {
 
-	loadLibrary("lib/libftp.so");
+int main(void)
+{
+	signal(SIGINT, onStop);
+
+	App app {"lib/libftp.so"};
+	app.start();
+
 
 	return 0;
 }

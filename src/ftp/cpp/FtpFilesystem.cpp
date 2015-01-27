@@ -31,11 +31,14 @@ FtpFilesystem::FtpFilesystem() {
 
 	_ftp->setWorkingDirectory(cfgMap["working_directory"]);
 
+	cout << _ftp->systemType() << endl;
 	//_ftp->setFileType(FTPClientSession::TYPE_TEXT);
 
 }
 
 FtpFilesystem::~FtpFilesystem() {
+	cout << "logout" << endl;
+	_ftp->logout();
 }
 
 void FtpFilesystem::walk(Performer & performer) {
