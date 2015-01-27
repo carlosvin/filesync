@@ -43,6 +43,22 @@ void FtpFilesystem::walk(Performer & performer) {
 }
 
 void FtpFilesystem::walk(Performer & performer, const string & path) {
+	vector<string> fileList = getFiles(path);
+
+	if (isDir(path, fileList))
+	{
+		performer.onDir(path.c_str());
+		for (auto file : fileList)
+		{
+			walk(performer, file);
+		}
+	}else{
+		performer.onFile(path.c_str());
+	}
+}
+
+vector<string> FtpFilesystem::getFiles(const string & path)
+{
 	istream & is = _ftp->beginList(path, false);
 	string line;
 	vector<string> fileList;
@@ -60,37 +76,11 @@ void FtpFilesystem::walk(Performer & performer, const string & path) {
 
 	_ftp->endList();
 
-	size_t numFiles = fileList.size();
+	return fileList;
+}
 
-	if (numFiles > 0)
-	{
-		if (numFiles == 1) {
-			string d = fileList.front();
-
-			if (d == path) {
-				// is a file
-				performer.onFile(path.c_str());
-			} else {
-				walk(performer, d);
-				// current file is a directory
-				performer.onDir(path.c_str());
-			}
-		} else {
-
-			for (auto file : fileList) {
-				walk(performer, file);
-			}
-			// current file is a directory
-			performer.onDir(path.c_str());
-
-		}
-	} else
-	{
-		cout << path << " <empty>" << endl;
-		performer.onDir(path.c_str());
-	}
-
-
-
+bool FtpFilesystem::isDir(const string & path, vector<string> filesInside)
+{
+	return filesInside.size() != 1 || filesInside.front() != path;
 }
 

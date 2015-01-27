@@ -21,6 +21,11 @@ private:
 
 	void walk(Performer & performer, const  std::string & path);
 
+	// using vector move
+	std::vector<std::string> getFiles(const std::string & path);
+
+	bool isDir(const std::string & path, std::vector<std::string> filesInside);
+
 public:
 
 	FtpFilesystem();
