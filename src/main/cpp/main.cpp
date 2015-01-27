@@ -93,15 +93,15 @@ public:
 
 
 
-void onStop (int signal)
-{
-	cout << "Caught SIGINT" << endl;
-}
+//void onStop (int signal)
+//{
+//	cout << "Caught SIGINT" << endl;
+//}
 
 
 int main(void)
 {
-	signal(SIGINT, onStop);
+	//signal(SIGINT, onStop);
 
 	App app {"lib/libftp.so"};
 	app.start();
